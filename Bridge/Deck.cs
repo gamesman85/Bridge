@@ -1,9 +1,7 @@
 namespace Bridge;
 
-public class Deck
+public class Deck : List<Card>
 {
-    private List<Card> _cards = new List<Card>();
-
     private static string ConvertNumberToName(int number)
     {
         if (number > 2 && number < 11)
@@ -24,16 +22,23 @@ public class Deck
 
     public Deck()
     {
-        string[] suits = { "♠", "♥", "♦", "♣" };
-        string[] suitNames = { "Spades", "Hearts", "Diamonds", "Clubs" };
+        string[] suits = { "♣", "♦", "♥", "♠" };
+        string[] suitNames = { "Clubs", "Diamonds", "Hearts", "Spades"};
         
         for (int s = 0; s < 4; s++)
         {
             for (int r = 2; r <= 14; r++)
             {
                 string rankName = ConvertNumberToName(r);
-                _cards.Add(new Card(r, rankName, suits[s], suitNames[s]));
+                Add(new Card(r, rankName, suits[s], suitNames[s]));
             }
         }
+    }
+    
+    public void Shuffle()
+    {
+        List<Card> shuffled = this.OrderBy(card => Random.Shared.Next()).ToList();
+        Clear();
+        AddRange(shuffled);
     }
 }
